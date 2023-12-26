@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, Button } from 'react-native'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { actionCreators } from '../state/index'
 
 export default function QRScanner() {
+  const dispatch=useDispatch();
+  const actions=bindActionCreators(actionCreators,dispatch)
+
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
-  const pr='pras'
   const navigation = useNavigation()
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -19,6 +24,7 @@ export default function QRScanner() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true)
+    actions.qrcodeFetch(data)
     navigation.navigate('AssetInfo',{
       assetid:data,
     })

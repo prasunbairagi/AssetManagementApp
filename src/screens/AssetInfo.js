@@ -7,20 +7,28 @@ import {
   TextInput,
   Pressable,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  Keyboard 
 } from 'react-native'
 import assetdata from '../../datadummy.json'
 import { FontAwesome5 } from '@expo/vector-icons'
+import { useSelector } from 'react-redux'
 
 const AssetInfo = () => {
- 
-  // const assetid = route.params?.assetid || null;  
-  // console.log(assetid)
+  const qrcode=useSelector((state)=>state.qrcode)
+
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [asset, setAsset] = useState(null)
-  const [assetcode, setAssetcode] = useState(null)
+  const [assetcode, setAssetcode] = useState(qrcode?qrcode:null)
+  useEffect(() => {
+    if(qrcode){
+      fetchAssetData(assetcode)
+    }
+  }, [])
+
   const searchAsset = async () => {
+    Keyboard.dismiss()
     await fetchAssetData(assetcode)
   }
   const fetchAssetData = async (code) => {
@@ -50,6 +58,7 @@ const AssetInfo = () => {
           onChangeText={(text) => setAssetcode(text)}
           placeholder="Search by Asset Code"
           keyboardType="numeric"
+          value={assetcode}
         />
         <Pressable style={styles.buttonPressArea} onPress={searchAsset}>
           <View style={styles.searchContainer}>
@@ -63,7 +72,7 @@ const AssetInfo = () => {
             <Text style={styles.disclaimationText}>Oops ! No data available for this. Try another code</Text>
           </View>
         )}
-        {asset == null && error === null && assetcode == null && (
+        {asset == null && error === null && (assetcode == null||assetcode=='') && (
           <View style={styles.disclaimationBox}>
             <Text style={styles.disclaimationText}>
               Welcome User! Please search your asset by entering Asset Code above

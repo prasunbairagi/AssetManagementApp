@@ -2,14 +2,20 @@ import React from 'react'
 import { SafeAreaView, StyleSheet, View, Button } from 'react-native'
 import { Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { actionCreators } from '../state/index'
 
 const Home = () => {
+  const dispatch=useDispatch();
+  const actions=bindActionCreators(actionCreators,dispatch)
   const navigation = useNavigation()
 
   const handleScanner = () => {
     navigation.navigate('Scanner')
   }
   const handleSearchByCode = () => {
+    actions.qrcodeFetch('')
     navigation.navigate('AssetInfo')
   }
 

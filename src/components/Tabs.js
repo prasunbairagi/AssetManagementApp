@@ -117,7 +117,8 @@ const Tabs = () => {
                   : 'white'
               }
             />
-          )
+          ),
+          unmountOnBlur: true
         }}
       >
         {() => <EntireAssets />}

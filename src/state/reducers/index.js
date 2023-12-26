@@ -1,7 +1,7 @@
 import {combineReducers} from "redux";
-import amountReducer from "./amountReducer";
+import qrcodeReducer from "./qrcodeReducer";
 
 const reducers = combineReducers({
-    amount:amountReducer,
+    qrcode:qrcodeReducer,
 })
 export default reducers 

@@ -10,7 +10,7 @@ export const qrcodeClear=(assetqrcode)=>{
     return(dispatch)=>{
         dispatch({
             type:'clear',
-            payload:assetqrcode
+            payload:''
         })
     }
 }
