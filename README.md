@@ -4,8 +4,11 @@
 📱 Take an exclusive look at this preview with a screen recording below.
 
 👨‍💻 This asset management tool is designed for efficiency! Key features include:
+
 1️⃣ **Barcode Scanning**: Easily scan barcodes to add or manage assets effortlessly.
+
 2️⃣ **Smart Filtering**: Seamlessly filter the entire asset list for quick access.
+
 3️⃣ **Search by Code**: Instantly locate any asset by entering its unique code.
 
 🔍 In this staging phase, I'm actively seeking feedback on these features. What do you think? Any additional functionalities you'd find valuable?
