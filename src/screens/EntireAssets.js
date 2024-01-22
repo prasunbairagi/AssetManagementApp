@@ -36,7 +36,7 @@ const EntireAssets = () => {
       setAsset(null)
       setLoading(true)
       const res = await fetch(
-        `http://192.168.1.4:1443/api/CategoryAndAsset/GetCategoriesByIDs?OutletID=${filteredoutletvalue}&CategoryID=${filteredcategoryvalue}`
+        `http://192.168.1.6:1443/api/CategoryAndAsset/GetCategoriesByIDs?OutletID=${filteredoutletvalue}&CategoryID=${filteredcategoryvalue}`
       )
       if (!res.ok) {
         throw new Error('Could not fetch Asset')
@@ -58,7 +58,7 @@ const EntireAssets = () => {
       // setOutlet(null)
       setLoading(true)
       const res = await fetch(
-        `http://192.168.1.4:1443/api/AssetOutlet/GetAllOutlets`
+        `http://192.168.1.6:1443/api/AssetOutlet/GetAllOutlets`
       )
       if (!res.ok) {
         throw new Error('Could not fetch Outlets')
@@ -79,7 +79,7 @@ const EntireAssets = () => {
       // setCategory(null)
       setLoading(true)
       const res = await fetch(
-        `http://192.168.1.4:1443/api/AssetCategory/GetAllCategories`
+        `http://192.168.1.6:1443/api/AssetCategory/GetAllCategories`
       )
       if (!res.ok) {
         throw new Error('Could not fetch Categories')
