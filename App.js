@@ -4,8 +4,9 @@ import { NavigationContainer } from '@react-navigation/native'
 import Tabs from './src/components/Tabs'
 import { Provider } from 'react-redux'
 import { store } from './src/state/store'
-
-
+// import { KeepAwake } from 'expo';
+// // Activate KeepAwake here
+// KeepAwake.activate();
 export default function App() {
   return (
     <Provider store={store}>

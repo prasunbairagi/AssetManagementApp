@@ -7,7 +7,7 @@ const useAssetData = () => {
   const fetchAssetData = async () => {
     try {
       const res = await fetch(
-        `http://192.168.1.6:1443/api/asset/getAllAssetMaster`
+        `http://192.168.1.3:1443/api/asset/getAllAssetMaster`
       )
       const data = await res.json()
       setAsset(data)

@@ -36,7 +36,7 @@ const AssetInfo = () => {
       setAsset(null)
       setLoading(true)
       const res = await fetch(
-        `http://192.168.1.6:1443/api/asset/getAseetData?AssetCode=${code}`
+        `http://192.168.1.3:1443/api/asset/getAseetData?AssetCode=${code}`
       )
       if (!res.ok) {
         throw new Error('Could not fetch Asset Data')
