@@ -12,19 +12,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AssetInfo from '../screens/AssetInfo'
 const pr='pr'
 const Tab = createBottomTabNavigator()
-const Stack = createStackNavigator();
-// const QRScannerStack = () => (
-//   <Stack.Navigator>
-//     <Stack.Screen name="QRScanner" component={QRScanner} options={{ headerShown: false }}/>
-//   </Stack.Navigator>
-// );
+// const Stack = createStackNavigator();
 
-// const AssetInfoStack = () => (
-//   <Stack.Navigator>
-//     <Stack.Screen name="AssetInfo" component={AssetInfo} options={{ headerShown: false }}/>
-//   </Stack.Navigator>
-// );
-const Tabs = () => {
+const ContentTabs = () => {
   return (
     <>
     <StatusBar
@@ -136,4 +126,4 @@ const Tabs = () => {
 //     flex: 1
 //   }
 // })
-export default Tabs
+export default ContentTabs

@@ -1,15 +1,15 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
-import { Provider } from 'react-redux'
-import { store } from './src/state/store'
-import Landing from './src/components/Landing'
+import LoginTabs from './LoginTabs'
+import Login from '../screens/Login'
 
-export default function App() {
-  return (
-    <Provider store={store}>
-      <Landing/>
-    </Provider>
+const LoginLanding = ()=> {
+  return (   
+    // <Login/> 
+      <NavigationContainer>
+        <LoginTabs />
+      </NavigationContainer>
   )
 }
 
@@ -24,3 +24,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   }
 })
+
+export default LoginLanding

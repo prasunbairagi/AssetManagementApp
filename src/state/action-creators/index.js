@@ -14,3 +14,19 @@ export const qrcodeClear=(assetqrcode)=>{
         })
     }
 }
+export const loggedin=()=>{
+    return(dispatch)=>{
+        dispatch({
+            type:'loggedin',
+            payload:true
+        })
+    }
+}
+export const loggedout=()=>{
+    return(dispatch)=>{
+        dispatch({
+            type:'loggedout',
+            payload:false
+        })
+    }
+}

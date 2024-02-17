@@ -1,14 +1,18 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
+import Tabs from './src/components/Tabs'
 import { Provider } from 'react-redux'
 import { store } from './src/state/store'
-import Landing from './src/components/Landing'
-
+// import { KeepAwake } from 'expo';
+// // Activate KeepAwake here
+// KeepAwake.activate();
 export default function App() {
   return (
     <Provider store={store}>
-      <Landing/>
+      <NavigationContainer>
+        <Tabs />
+      </NavigationContainer>
     </Provider>
   )
 }

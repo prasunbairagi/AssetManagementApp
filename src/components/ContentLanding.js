@@ -1,15 +1,17 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
-import { Provider } from 'react-redux'
-import { store } from './src/state/store'
-import Landing from './src/components/Landing'
+import ContentTabs from './ContentTabs'
+// import { Provider } from 'react-redux'
+// import { store } from './src/state/store'
 
-export default function App() {
+const ContentLanding = ()=> {
   return (
-    <Provider store={store}>
-      <Landing/>
-    </Provider>
+    <>
+      <NavigationContainer>
+        <ContentTabs />
+      </NavigationContainer>    
+    </>
   )
 }
 
@@ -24,3 +26,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   }
 })
+
+export default ContentLanding
