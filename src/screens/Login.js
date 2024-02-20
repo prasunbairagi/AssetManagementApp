@@ -1,49 +1,75 @@
-import React from 'react'
-import { SafeAreaView, StyleSheet, View, Button } from 'react-native'
-import { Text,TextInput } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import React, { useState, useRef } from 'react'
+import { SafeAreaView, StyleSheet, View, Button,Alert } from 'react-native'
+import { Text, TextInput } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actionCreators } from '../state/index'
-import { useSelector } from 'react-redux'
+import axios from 'axios'
 
 const Login = () => {
-    const loggedinstate=useSelector((state)=>state.loginState)
-  const dispatch=useDispatch();
-  const actions=bindActionCreators(actionCreators,dispatch)
-// console.log(loggedinstate)
-  const handleloginstate = () => {    
-    actions.loggedin();
-    // console.log(loggedinstate)    
+  const userNameRef = useRef('')
+  const passWordRef = useRef('')
+  const dispatch = useDispatch()
+  const actions = bindActionCreators(actionCreators, dispatch)
+  const handleloginstate = async () => {
+    const userName = userNameRef.current
+    const passWord = passWordRef.current
+    var userLoginDetails = {
+      UserName: userName,
+      Password: passWord
+    }
+    console.log(userLoginDetails)
+    await axios
+      .post('http://192.168.1.3:1443/api/User/ValidateUser', userLoginDetails)
+      .then((response) => {
+        if (response.data.ErrorCode == 1) {
+          actions.userNameAssign(response.data.Output)
+          actions.loggedin()
+        }
+        else{          
+        createTwoButtonAlert('Incorrect User','Please enter Correct Username or Password')
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        createTwoButtonAlert('Error Logging in','Its not you , its us .. !! Please try again')        
+      })
   }
+  const createTwoButtonAlert = (title,message) =>
+    Alert.alert(title, message, [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.subcontainer}>
         <View style={styles.homeinfo}>
           <Text style={styles.heading}>Welcome Back !!</Text>
           <Text style={styles.subheading}>
-           Please Login to continue our services
+            Please Login to continue our services
           </Text>
           <TextInput
-          style={styles.input}          
-          placeholder="User Name"
-          keyboardType="default"
-          textContentType="username"
-        />
-        <TextInput
-          style={styles.input}          
-          placeholder="Password"
-          keyboardType="default"
-          textContentType="password"
-          secureTextEntry={true}
-        />
+            style={styles.input}
+            placeholder="User Name"
+            keyboardType="default"
+            textContentType="username"
+            onChangeText={(text) => (userNameRef.current = text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            keyboardType="default"
+            textContentType="password"
+            secureTextEntry={true}
+            onChangeText={(text) => (passWordRef.current = text)}
+          />
         </View>
         <View style={styles.buttoncontainer}>
-          <Button
-            title="Login"
-            color="#009933"
-            onPress={handleloginstate}        
-          />
+          <Button title="Login" color="#009933" onPress={handleloginstate} />
         </View>
       </View>
     </SafeAreaView>
@@ -60,7 +86,7 @@ const styles = StyleSheet.create({
   subcontainer: {
     flex: 1,
     // justifyContent:'space-between',
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   heading: {
     backgroundColor: '#fff',
@@ -72,21 +98,21 @@ const styles = StyleSheet.create({
   subheading: {
     fontSize: 17,
     backgroundColor: '#fff',
-    textAlign:'center'
+    textAlign: 'center'
   },
   homeinfo: {
     backgroundColor: '#fff',
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
-  buttoncontainer:{
-    flexDirection:'row',
-    justifyContent:'space-around',
-    paddingVertical:20
+  buttoncontainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 20
   },
   input: {
     height: 50,
     marginHorizontal: 20,
-    marginTop:20,
+    marginTop: 20,
     borderWidth: 1,
     padding: 10,
     borderRadius: 10,

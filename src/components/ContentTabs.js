@@ -1,20 +1,32 @@
-import React from 'react'
+import React,{useState} from 'react'
 import EntireAssets from '../screens/EntireAssets'
 import Home from '../screens/Home'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Feather } from '@expo/vector-icons'
-import { StatusBar } from 'react-native'
+import { View, Text, StatusBar, TouchableOpacity, StyleSheet } from 'react-native'
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'; 
 import QRScanner from '../screens/QRScanner';
-import { createStackNavigator } from '@react-navigation/stack';
 import AssetInfo from '../screens/AssetInfo'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { actionCreators } from '../state/index'
+import { useSelector } from 'react-redux'
+
 const pr='pr'
 const Tab = createBottomTabNavigator()
-// const Stack = createStackNavigator();
 
 const ContentTabs = () => {
+  const usernamefetched=useSelector((state)=>state.userName)
+  const [username, setUsername] = useState(usernamefetched?usernamefetched:'')
+  const truncatedUsername = username.length > 8 ? `${username.slice(0, 6)}...` : username;
+  const dispatch=useDispatch();
+  const actions=bindActionCreators(actionCreators,dispatch)
+  const handleButtonClick=()=>{
+    actions.userNameRemoval()
+    actions.loggedout();     
+  }
   return (
     <>
     <StatusBar
@@ -40,7 +52,32 @@ const ContentTabs = () => {
           fontSize: 25,
           color: 'white'
         },
-        headerTitleAlign: 'center'
+        headerTitleAlign: 'center',
+        headerRight: () => ( // Add headerRight option
+          <TouchableOpacity onPress={handleButtonClick} style={{ marginRight: 20 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{marginRight: 5}}>
+            <Text style={{ color: 'white', marginLeft: 5 ,fontSize:10}}>Not You..?</Text>
+            <Text style={{ color: 'white', marginLeft: 5 ,fontSize:13}}>Logout</Text>
+            </View>
+            <Entypo
+              name={'circle-with-cross'}
+              size={24}
+              color={'white'}
+            />
+            </View>
+            
+          </TouchableOpacity>
+        ),
+        headerLeft: () => ( // Add headerLeft option
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 20 }}>
+            <MaterialCommunityIcons name="face-man" size={24} color="white" />
+            <View>
+            <Text style={{ color: 'white', marginLeft: 5 ,fontSize:10}}>Welcome..!!</Text>
+            <Text style={{color: 'white', marginLeft: 5 ,fontSize:13}}>{truncatedUsername}</Text>
+            </View>
+          </View>
+        ),
       }}
     >
       <Tab.Screen
@@ -122,8 +159,10 @@ const ContentTabs = () => {
   )
 }
 // const styles = StyleSheet.create({
-//   container: {
-//     flex: 1
-//   }
+//   leftHeadertext:{ color: 'white', marginLeft: 5 ,fontSize:13, },
+//   userNameEllipsis:{overFlow: 'hidden',
+//   whiteSpace: 'nowrap',
+//   textOverflow: 'ellipsis',
+//   width: '8ch'}
 // })
 export default ContentTabs

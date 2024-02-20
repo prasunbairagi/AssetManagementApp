@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import LoginTabs from './LoginTabs'
-import Login from '../screens/Login'
+// import Login from '../screens/Login'
 
 const LoginLanding = ()=> {
   return (   

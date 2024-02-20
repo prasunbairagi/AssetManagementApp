@@ -30,3 +30,19 @@ export const loggedout=()=>{
         })
     }
 }
+export const userNameAssign=(nameofuser)=>{
+    return(dispatch)=>{
+        dispatch({
+            type:'loginUser',
+            payload:nameofuser
+        })
+    }
+}
+export const userNameRemoval=()=>{
+    return(dispatch)=>{
+        dispatch({
+            type:'logoutUser',
+            payload:''
+        })
+    }
+}
