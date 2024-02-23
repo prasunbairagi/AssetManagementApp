@@ -14,26 +14,10 @@ import {
 import assetdata from '../../datadummy.json'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
-import DateTimePicker from '@react-native-community/datetimepicker'
+import DateTimePicker from '@react-native-community/datetimepicker';
 const AddAssetScreen2 = ({ navigation }) => {
-  const [purchaseDate, setPurchaseDate] = useState(null)
-  const [date, setDate] = useState(new Date())
-  const [showPicker, setShowPicker] = useState(false)
-  const toggleDatePicker = () => {
-    setShowPicker(!showPicker)
-  }
-  const onChange = ({ type }, selectedDate) => {
-    if (type == 'set') {
-      const currentDate = selectedDate
-      setDate(currentDate)
-      if(Platform.OS==='android'){
-        toggleDatePicker();
-        setPurchaseDate(currentDate.toDateString())
-      }
-    } else {
-      toggleDatePicker()
-    }
-  }
+  const [assetcode, setAssetcode] = useState(null)
+
   return (
     <>
       <View style={styles.mainContainer}>
@@ -46,49 +30,35 @@ const AddAssetScreen2 = ({ navigation }) => {
               style={styles.input}
               placeholder="Status"
               keyboardType="default"
-              value={'pras'}
+              value={assetcode}
             />
           </View>
           <View style={{ display: 'flex', flexDirection: 'row' }}>
-            {!showPicker &&
-            <Pressable onPress={toggleDatePicker}>
             <TextInput
               style={styles.input}
               placeholder="Purchase Date"
               keyboardType="default"
-              value={purchaseDate}
-              onChangeText={setPurchaseDate}
-              editable={false}
+              value={assetcode}
             />
-          </Pressable>
-          }
             <TextInput
               style={styles.input}
               placeholder="Warranty Date"
               keyboardType="default"
-              value={'pras'}
+              value={assetcode}
             />
-            {showPicker && (
-              <DateTimePicker
-                mode="date"
-                display="spinner"
-                value={date}
-                onChange={onChange}
-              />
-            )}
           </View>
           <View style={{ display: 'flex', flexDirection: 'row' }}>
             <TextInput
               style={styles.input}
               placeholder="Expiry Date"
               keyboardType="default"
-              value={'pras'}
+              value={assetcode}
             />
             <TextInput
               style={styles.input}
               placeholder="Condition"
               keyboardType="default"
-              value={'pras'}
+              value={assetcode}
             />
           </View>
         </View>
