@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actionCreators } from '../state/index'
 import axios from 'axios'
-
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login = () => {
   const userNameRef = useRef('')
   const passWordRef = useRef('')
@@ -21,8 +21,9 @@ const Login = () => {
     console.log(userLoginDetails)
     await axios
       .post('http://192.168.1.3:1443/api/User/ValidateUser', userLoginDetails)
-      .then((response) => {
+      .then(async (response) => {
         if (response.data.ErrorCode == 1) {
+          // await AsyncStorage.setItem('user',response.data.Output );
           actions.userNameAssign(response.data.Output)
           actions.loggedin()
         }
