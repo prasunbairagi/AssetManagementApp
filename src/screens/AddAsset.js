@@ -28,8 +28,6 @@ const AddAsset = () => {
       }}>
       <Stack.Screen name="Home" component={AddAssetScreen1}  options={{ headerShown: false }}/>
       <Stack.Screen name="Notifications" component={AddAssetScreen2}  options={{ headerShown: false }}/>
-      {/* <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Settings" component={Settings} /> */}
     </Stack.Navigator>
     </>
   )

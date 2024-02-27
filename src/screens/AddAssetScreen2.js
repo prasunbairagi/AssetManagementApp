@@ -17,21 +17,34 @@ import { useSelector } from 'react-redux'
 import DateTimePicker from '@react-native-community/datetimepicker'
 const AddAssetScreen2 = ({ navigation }) => {
   const [purchaseDate, setPurchaseDate] = useState(null)
+  const [warrantyDate, setWarrantyDate] = useState(null)
+  const [expiryDate, setExpiryDate] = useState(null)
   const [date, setDate] = useState(new Date())
   const [showPicker, setShowPicker] = useState(false)
-  const toggleDatePicker = () => {
+  const [whichPicker, setWhichPicker] = useState('')
+  const toggleDatePicker = (pickername) => {
     setShowPicker(!showPicker)
+    setWhichPicker(pickername)
   }
   const onChange = ({ type }, selectedDate) => {
     if (type == 'set') {
       const currentDate = selectedDate
       setDate(currentDate)
-      if(Platform.OS==='android'){
-        toggleDatePicker();
-        setPurchaseDate(currentDate.toDateString())
+      if (Platform.OS === 'android') {
+        toggleDatePicker()
+        // setShowPicker(true)
+        // yyyy-mm-dd
+        if (whichPicker == 'purchaseDate') {
+          setPurchaseDate(currentDate.toISOString().split('T')[0])
+        } else if (whichPicker == 'warrantyDate') {
+          setWarrantyDate(currentDate.toISOString().split('T')[0])
+        } else {
+          setExpiryDate(currentDate.toISOString().split('T')[0])
+        }
       }
     } else {
-      toggleDatePicker()
+      toggleDatePicker('')
+      // setShowPicker(false)
     }
   }
   return (
@@ -50,40 +63,63 @@ const AddAssetScreen2 = ({ navigation }) => {
             />
           </View>
           <View style={{ display: 'flex', flexDirection: 'row' }}>
-            {!showPicker &&
-            <Pressable onPress={toggleDatePicker}>
-            <TextInput
-              style={styles.input}
-              placeholder="Purchase Date"
-              keyboardType="default"
-              value={purchaseDate}
-              onChangeText={setPurchaseDate}
-              editable={false}
-            />
-          </Pressable>
-          }
-            <TextInput
-              style={styles.input}
-              placeholder="Warranty Date"
-              keyboardType="default"
-              value={'pras'}
-            />
+            <Pressable
+              style={{ height: 50, flex: 1 }}
+              onPress={() => {
+                toggleDatePicker('purchaseDate')
+              }}
+            >
+              <TextInput
+                style={styles.input}
+                placeholder="Purchase Date"
+                keyboardType="default"
+                value={purchaseDate}
+                onChangeText={setPurchaseDate}
+                editable={false}
+              />
+            </Pressable>
+
+            <Pressable
+              style={{ height: 50, flex: 1 }}
+              onPress={() => {
+                toggleDatePicker('warrantyDate')
+              }}
+            >
+              <TextInput
+                style={styles.input}
+                placeholder="Warranty Date"
+                keyboardType="default"
+                value={warrantyDate}
+                onChangeText={setWarrantyDate}
+                editable={false}
+              />
+            </Pressable>
             {showPicker && (
               <DateTimePicker
                 mode="date"
                 display="spinner"
                 value={date}
                 onChange={onChange}
+                // onChange={(event, selectedDate) => onChange(event, selectedDate, 'parameter')}
               />
             )}
           </View>
           <View style={{ display: 'flex', flexDirection: 'row' }}>
-            <TextInput
-              style={styles.input}
-              placeholder="Expiry Date"
-              keyboardType="default"
-              value={'pras'}
-            />
+            <Pressable
+              style={{ height: 50, flex: 1 }}
+              onPress={() => {
+                toggleDatePicker('expiryDate')
+              }}
+            >
+              <TextInput
+                style={styles.input}
+                placeholder="Expiry Date"
+                keyboardType="default"
+                value={expiryDate}
+                onChangeText={setExpiryDate}
+                editable={false}
+              />
+            </Pressable>
             <TextInput
               style={styles.input}
               placeholder="Condition"

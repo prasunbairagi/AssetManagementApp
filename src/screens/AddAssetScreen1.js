@@ -11,17 +11,159 @@ import {
   ActivityIndicator,
   Keyboard
 } from 'react-native'
+import { Picker } from '@react-native-picker/picker'
+import DropDownPicker from 'react-native-dropdown-picker'
 import { NavigationContainer } from '@react-navigation/native'
-
+import { FontAwesome } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
+import { Entypo } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
 const AddAssetScreen1 = ({ navigation }) => {
-  const [assetcode, setAssetcode] = useState(null)
+  const [assetcode, setAssetcode] = useState(null)  
+  // state variables for categories
+  const [openCategory, setOpenCategory] = useState(false)
+  const [categoryValue, setCategoryValue] = useState(null)
+  const [category, setCategory] = useState([
+    { Category_Name: 'All', Category_ID: -1 }
+  ])
+  const [filteredcategoryvalue, setFilteredcategoryvalue] = useState(-1)
+  // state variables for sub categories
+  const [opensubCategory, setOpensubCategory] = useState(false)
+  const [subcategoryValue, setsubCategoryValue] = useState(null)
+  const [subcategory, setsubCategory] = useState([
+    { Subcategory_Name: 'Choose Category first', Subcategory_ID: -1 }
+  ])
+  const [filteredsubcategoryvalue, setFilteredsubcategoryvalue] = useState(-1)
+  // state variables for manufacturers
+  const [openmanufacturer, setOpenmanufacturer] = useState(false)
+  const [manufacturerValue, setmanufacturerValue] = useState(null)
+  const [manufacturer, setmanufacturer] = useState([
+    { Manufacturer_Name: 'Choose Category first', Manufacturer_ID: -1 }
+  ])
+  const [filteredmanufacturervalue, setFilteredmanufacturervalue] = useState(-1)
+  // state variables for brands
+  const [openbrand, setOpenbrand] = useState(false)
+  const [brandValue, setbrandValue] = useState(null)
+  const [brand, setbrand] = useState([
+    { Brand_Name: 'Choose Mf first', Brand_ID: -1 }
+  ])
+  const [filteredbrandvalue, setFilteredbrandvalue] = useState(-1)
+  // state variables for tangible/intangible
+  const [opentangible, setOpentangible] = useState(false)
+  const [tangibleValue, settangibleValue] = useState(null)
+  // const [brand, setbrand] = useState([
+  //   { Brand_Name: 'Choose Mf first', Brand_ID: -1 }
+  // ])
+  const [filteredtangiblevalue, setFilteredtangiblevalue] = useState(-1)
+  // state variables for assettype
+  const [openassettype, setOpenassettype] = useState(false)
+  const [assettypeValue, setassettypeValue] = useState(null)
+  // const [brand, setbrand] = useState([
+  //   { Brand_Name: 'Choose Mf first', Brand_ID: -1 }
+  // ])
+  const [filteredassettypevalue, setFilteredassettypevalue] = useState(-1)
 
+  // method to fetch categories
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch(
+        `http://192.168.1.3:1443/api/AssetCategory/GetAllCategories`
+      )
+      if (!res.ok) {
+        setCategory({ Category_Name: 'Oops! Empty', Category_ID: -1 })
+        throw new Error('Could not fetch Categories')
+      }
+      const data = await res.json()
+      setCategory(data)
+    } catch (e) {
+      // setCategory(null)
+      // setError('Could not fetch Categories')
+    }
+  }
+  // method to fetch sub-categories
+  const fetchSubCategories = async () => {
+    try {
+      const res = await fetch(
+        `http://192.168.1.3:1443/api/AssetSubcategory/GetSubcategoriesByCategory?categoryID=` +
+          filteredcategoryvalue
+      )
+      if (!res.ok) {
+        setsubCategory({ Subcategory_Name: 'Oops! empty', Subcategory_ID: -1 })
+        throw new Error('Could not fetch Categories')
+      }
+      const data = await res.json()
+      setsubCategory(data)
+    } catch (e) {
+      // setCategory(null)
+      // setError('Could not fetch Categories')
+    }
+  }
+  // method to fetch manufacturers
+  const fetchmanufacturers = async () => {
+    try {
+      const res = await fetch(
+        `http://192.168.1.3:1443/api/AssetManufacturer/GetManufacturersBycategory?categoryID=` +
+          filteredcategoryvalue
+      )
+      if (!res.ok) {
+        setmanufacturer({
+          Manufacturer_Name: 'Oops! empty',
+          Manufacturer_ID: -1
+        })
+        throw new Error('Could not fetch Categories')
+      }
+      const data = await res.json()
+      setmanufacturer(data)
+    } catch (e) {
+      // setCategory(null)
+      // setError('Could not fetch Categories')
+    }
+  }
+  // method to fetch sub-categories
+  const fetchbrands = async () => {
+    try {
+      const res = await fetch(
+        `http://192.168.1.3:1443/api/AssetBrand/GetBrandsByManufacturers?manufacturerID=` +
+          filteredmanufacturervalue
+      )
+      if (!res.ok) {
+        setbrand({ Brand_Name: 'Oops! empty', Brand_ID: -1 })
+        throw new Error('Could not fetch Categories')
+      }
+      const data = await res.json()
+      setbrand(data)
+    } catch (e) {
+      // setCategory(null)
+      // setError('Could not fetch Categories')
+    }
+  }
+  useEffect(() => {
+    ;(async () => {
+      // await fetchOutlets()
+      await fetchCategories()
+    })()
+  }, [])
+  // sub categories and manufacturers fetch after category is chosen
+  useEffect(() => {
+    ;(async () => {
+      await fetchSubCategories()
+      await fetchmanufacturers()
+    })()
+  }, [filteredcategoryvalue])
+  // brands fetch after manufacturer is chosen
+  useEffect(() => {
+    ;(async () => {
+      await fetchbrands()
+    })()
+  }, [filteredmanufacturervalue])
   return (
     <>
       <View style={styles.mainContainer}>
         <View>
           <View style={styles.disclaimationBox}>
-            <Text style={styles.disclaimationText}>Part 1 : Asset Information</Text>
+            <Text style={styles.disclaimationText}>
+              Part 1 : Asset Information
+            </Text>
           </View>
           <View style={{ display: 'flex', flexDirection: 'row' }}>
             <TextInput
@@ -32,8 +174,8 @@ const AddAssetScreen1 = ({ navigation }) => {
             />
             <TextInput
               style={styles.input}
-              placeholder="Asset Type"
-              keyboardType="default"
+              placeholder="Quantity"
+              keyboardType="numeric"
               value={assetcode}
             />
           </View>
@@ -59,48 +201,266 @@ const AddAssetScreen1 = ({ navigation }) => {
               value={assetcode}
             />
           </View>
-          <View style={{ display: 'flex', flexDirection: 'row' }}>
-            <TextInput
-              style={styles.input}
-              placeholder="Category"
-              keyboardType="default"
-              value={assetcode}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Sub Category"
-              keyboardType="default"
-              value={assetcode}
-            />
+
+          <View style={styles.dropdownContainer}>
+            <View style={[styles.dropdown, { paddingRight: 5 }]}>
+              <DropDownPicker
+                key="categoryPicker"
+                open={openCategory}
+                value={categoryValue}
+                items={category}
+                setOpen={(value) => {
+                  setOpenCategory(value)
+                  setOpenmanufacturer(false)
+                  setOpenbrand(false)
+                  setOpensubCategory(false)
+                  setOpentangible(false)
+                  setOpenassettype(false)
+                }}
+                setValue={setCategoryValue}
+                setItems={setCategory}
+                placeholder="Category"
+                containerStyle={{ zIndex: 10 }}
+                style={{ zIndex: 10 }}
+                TickIconComponent={() => (
+                  <FontAwesome
+                    name="circle"
+                    style={{ marginRight: 5 }}
+                    color="#009933"
+                  />
+                )}
+                ArrowDownIconComponent={() => (
+                  <Feather name="chevron-down" size={22} color="black" />
+                )}
+                tickIconStyle={{
+                  width: 15,
+                  height: 15
+                }}
+                onSelectItem={async (item) => {
+                  setFilteredcategoryvalue(item.Category_ID)
+                }}
+                schema={{
+                  label: 'Category_Name',
+                  value: 'Category_ID'
+                }}
+              />
+            </View>
+            <View style={[styles.dropdown, { paddingLeft: 5 }]}>
+              <DropDownPicker
+                key="sub-categoryPicker"
+                open={opensubCategory}
+                value={subcategoryValue}
+                items={subcategory}
+                setOpen={(value) => {
+                  setOpensubCategory(value)
+                  setOpenCategory(false)
+                  setOpenmanufacturer(false)
+                  setOpenbrand(false)
+                  setOpentangible(false)
+                  setOpenassettype(false)
+                }}
+                setValue={setsubCategoryValue}
+                setItems={setsubCategory}
+                placeholder="Sub Category"
+                containerStyle={{ zIndex: 10 }}
+                style={{ zIndex: 10 }}
+                TickIconComponent={() => (
+                  <FontAwesome
+                    name="circle"
+                    style={{ marginRight: 5 }}
+                    color="#009933"
+                  />
+                )}
+                ArrowDownIconComponent={() => (
+                  <Feather name="chevron-down" size={22} color="black" />
+                )}
+                tickIconStyle={{
+                  width: 15,
+                  height: 15
+                }}
+                onSelectItem={async (item) => {
+                  setFilteredsubcategoryvalue(item.Subcategory_ID)
+                  console.log(filteredsubcategoryvalue)
+                }}
+                schema={{
+                  label: 'Subcategory_Name',
+                  value: 'Subcategory_ID'
+                }}
+              />
+            </View>
           </View>
-          <View style={{ display: 'flex', flexDirection: 'row' }}>
-            <TextInput
-              style={styles.input}
-              placeholder="Manufacturer"
-              keyboardType="default"
-              value={assetcode}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Brand"
-              keyboardType="default"
-              value={assetcode}
-            />
+          <View style={styles.dropdownContainer}>
+            <View style={[styles.dropdown, { paddingRight: 5 }]}>
+              <DropDownPicker
+                key="manufacturerPicker"
+                open={openmanufacturer}
+                value={manufacturerValue}
+                items={manufacturer}
+                setOpen={(value) => {
+                  setOpenmanufacturer(value)
+                  setOpensubCategory(false)
+                  setOpenCategory(false)
+                  setOpenbrand(false)
+                  setOpentangible(false)
+                  setOpenassettype(false)
+                }}
+                setValue={setmanufacturerValue}
+                setItems={setmanufacturer}
+                placeholder="Manufacturer"
+                containerStyle={{ zIndex: 9 }}
+                style={{ zIndex: 9 }}
+                TickIconComponent={() => (
+                  <FontAwesome
+                    name="circle"
+                    style={{ marginRight: 5 }}
+                    color="#009933"
+                  />
+                )}
+                ArrowDownIconComponent={() => (
+                  <Feather name="chevron-down" size={22} color="black" />
+                )}
+                tickIconStyle={{
+                  width: 15,
+                  height: 15
+                }}
+                onSelectItem={async (item) => {
+                  setFilteredmanufacturervalue(item.Manufacturer_ID)
+                }}
+                schema={{
+                  label: 'Manufacturer_Name',
+                  value: 'Manufacturer_ID'
+                }}
+              />
+            </View>
+            <View style={[styles.dropdown, { paddingLeft: 5 }]}>
+              <DropDownPicker
+                key="brandPicker"
+                open={openbrand}
+                value={brandValue}
+                items={brand}
+                setOpen={(value) => {
+                  setOpenbrand(value)
+                  setOpenmanufacturer(false)
+                  setOpensubCategory(false)
+                  setOpenCategory(false)
+                  setOpentangible(false)
+                  setOpenassettype(false)
+                }}
+                setValue={setbrandValue}
+                setItems={setbrand}
+                placeholder="Brand"
+                containerStyle={{ zIndex: 9 }}
+                style={{ zIndex: 9 }}
+                TickIconComponent={() => (
+                  <FontAwesome
+                    name="circle"
+                    style={{ marginRight: 5 }}
+                    color="#009933"
+                  />
+                )}
+                ArrowDownIconComponent={() => (
+                  <Feather name="chevron-down" size={22} color="black" />
+                )}
+                tickIconStyle={{
+                  width: 15,
+                  height: 15
+                }}
+                onSelectItem={async (item) => {
+                  setFilteredbrandvalue(item.Brand_ID)
+                }}
+                schema={{
+                  label: 'Brand_Name',
+                  value: 'Brand_ID'
+                }}
+              />
+            </View>
           </View>
-          <View style={{ display: 'flex', flexDirection: 'row' }}>
-            <TextInput
-              style={styles.input}
-              placeholder="Tangible"
-              keyboardType="default"
-              value={assetcode}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Quantity"
-              keyboardType="numeric"
-              value={assetcode}
-            />
+          <View style={styles.dropdownContainer}>
+            <View style={[styles.dropdown, { paddingRight: 5 }]}>
+              <DropDownPicker
+                key="tangiblePicker"
+                open={opentangible}
+                value={tangibleValue}
+                items={[
+                  { label: 'Tangible', value: '1' },
+                  { label: 'Non Tangible', value: '2' }
+                ]}
+                setOpen={(value) => {
+                  setOpentangible(value)
+                  setOpensubCategory(false)
+                  setOpenCategory(false)
+                  setOpenmanufacturer(false)
+                  setOpenbrand(false)
+                  setOpenassettype(false)
+                }}
+                setValue={settangibleValue}
+                setItems={settangibleValue}
+                placeholder="Tangible"
+                containerStyle={{ zIndex: 8 }}
+                style={{ zIndex: 8 }}
+                TickIconComponent={() => (
+                  <FontAwesome
+                    name="circle"
+                    style={{ marginRight: 5 }}
+                    color="#009933"
+                  />
+                )}
+                ArrowDownIconComponent={() => (
+                  <Feather name="chevron-down" size={22} color="black" />
+                )}
+                tickIconStyle={{
+                  width: 15,
+                  height: 15
+                }}
+                onSelectItem={async (item) => {
+                  setFilteredtangiblevalue(item.value)
+                }}
+              />
+            </View>
+            <View style={[styles.dropdown, { paddingLeft: 5 }]}>
+              <DropDownPicker
+                key="assettypePicker"
+                open={openassettype}
+                value={assettypeValue}
+                items={[
+                  { label: 'Individual', value: '1' },
+                  { label: 'Bulk', value: '2' }
+                ]}
+                setOpen={(value) => {
+                  setOpenassettype(value)
+                  setOpentangible(false)
+                  setOpensubCategory(false)
+                  setOpenCategory(false)
+                  setOpenmanufacturer(false)
+                  setOpenbrand(false)
+                }}
+                setValue={setassettypeValue}
+                setItems={setassettypeValue}
+                placeholder="Asset Type"
+                containerStyle={{ zIndex: 8 }}
+                style={{ zIndex: 8 }}
+                TickIconComponent={() => (
+                  <FontAwesome
+                    name="circle"
+                    style={{ marginRight: 5 }}
+                    color="#009933"
+                  />
+                )}
+                ArrowDownIconComponent={() => (
+                  <Feather name="chevron-down" size={22} color="black" />
+                )}
+                tickIconStyle={{
+                  width: 15,
+                  height: 15
+                }}
+                onSelectItem={async (item) => {
+                  setFilteredassettypevalue(item.value)
+                }}
+              />
+            </View>
           </View>
+
+          
         </View>
         <View
           style={{ display: 'flex', flexDirection: 'row', alignContent: 'end' }}
@@ -120,6 +480,12 @@ const AddAssetScreen1 = ({ navigation }) => {
   )
 }
 const styles = StyleSheet.create({
+  dropdownContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 5,
+    paddingTop: 10
+  },
   mainContainer: {
     flex: 1,
     paddingHorizontal: 10,
@@ -199,6 +565,9 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center'
+  },
+  dropdown: {
+    flex: 1
   }
 })
 export default AddAssetScreen1
