@@ -46,3 +46,19 @@ export const userNameRemoval=()=>{
         })
     }
 }
+export const addAssetForm=(assetformobject)=>{
+    return(dispatch)=>{
+        dispatch({
+            type:'addAssetForm',
+            payload:assetformobject
+        })
+    }
+}
+export const resetAssetForm=()=>{
+    return(dispatch)=>{
+        dispatch({
+            type:'deleteForm',
+            payload:null
+        })
+    }
+}

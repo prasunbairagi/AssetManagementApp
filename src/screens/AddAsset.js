@@ -10,6 +10,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 import AddAssetScreen1 from './AddAssetScreen1'
 import AddAssetScreen2 from './AddAssetScreen2'
+import AddAssetScreen3 from './AddAssetScreen3'
+import AddAssetScreen4 from './AddAssetScreen4'
 
 
 const AddAsset = () => { 
@@ -26,8 +28,10 @@ const AddAsset = () => {
         gestureDirection: 'horizontal',
         gestureResponseDistance:100
       }}>
-      <Stack.Screen name="Home" component={AddAssetScreen1}  options={{ headerShown: false }}/>
-      <Stack.Screen name="Notifications" component={AddAssetScreen2}  options={{ headerShown: false }}/>
+      <Stack.Screen name="AddAsset1" component={AddAssetScreen1}  options={{ headerShown: false }}/>
+      <Stack.Screen name="AddAsset2" component={AddAssetScreen2}  options={{ headerShown: false }}/>
+      <Stack.Screen name="AddAsset3" component={AddAssetScreen3}  options={{ headerShown: false }}/>
+      <Stack.Screen name="AddAsset4" component={AddAssetScreen4}  options={{ headerShown: false }}/>
     </Stack.Navigator>
     </>
   )

@@ -18,8 +18,21 @@ import { FontAwesome } from '@expo/vector-icons'
 import { Ionicons } from '@expo/vector-icons'
 import { Entypo } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
+import { useDispatch } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { actionCreators } from '../state/index'
+import { useSelector } from 'react-redux'
+
 const AddAssetScreen1 = ({ navigation }) => {
-  const [assetcode, setAssetcode] = useState(null)  
+  const dispatch = useDispatch()
+  const actions = bindActionCreators(actionCreators, dispatch)
+  const assetForm = useSelector((state) => state.assetForm)
+
+  const [assetname, setAssetname] = useState(null)
+  const [assetdesc, setAssetdesc] = useState(null)
+  const [assetmodelno, setAssetmodelno] = useState(null)
+  const [assetserial, setAssetserial] = useState(null)
+  const [assetqty, setAssetqty] = useState(null)
   // state variables for categories
   const [openCategory, setOpenCategory] = useState(false)
   const [categoryValue, setCategoryValue] = useState(null)
@@ -51,18 +64,27 @@ const AddAssetScreen1 = ({ navigation }) => {
   // state variables for tangible/intangible
   const [opentangible, setOpentangible] = useState(false)
   const [tangibleValue, settangibleValue] = useState(null)
-  // const [brand, setbrand] = useState([
-  //   { Brand_Name: 'Choose Mf first', Brand_ID: -1 }
-  // ])
   const [filteredtangiblevalue, setFilteredtangiblevalue] = useState(-1)
   // state variables for assettype
   const [openassettype, setOpenassettype] = useState(false)
   const [assettypeValue, setassettypeValue] = useState(null)
-  // const [brand, setbrand] = useState([
-  //   { Brand_Name: 'Choose Mf first', Brand_ID: -1 }
-  // ])
   const [filteredassettypevalue, setFilteredassettypevalue] = useState(-1)
-
+  // Form details part 1
+  const assetForm1={
+    "AssetID":-1,
+    "AssetName":assetname,
+    "AssetCode":"",
+    "AssetType":filteredassettypevalue,
+    "TangibleIntangible":filteredtangiblevalue,
+    "CategoryID":filteredcategoryvalue,
+    "SubcategoryID":filteredsubcategoryvalue,
+    "ManufacturerID":filteredmanufacturervalue,
+    "BrandID":filteredbrandvalue,
+    "Description":assetdesc,
+    "Quantity":assetqty,
+    "ModelNo":assetmodelno,
+    "SerialNo":assetserial,       
+  }
   // method to fetch categories
   const fetchCategories = async () => {
     try {
@@ -156,6 +178,13 @@ const AddAssetScreen1 = ({ navigation }) => {
       await fetchbrands()
     })()
   }, [filteredmanufacturervalue])
+  useEffect(() => {
+    if (assettypeValue == 'Individual') {
+      setAssetqty(1)
+    } else {
+      setAssetqty(null)
+    }
+  }, [filteredassettypevalue])
   return (
     <>
       <View style={styles.mainContainer}>
@@ -170,13 +199,8 @@ const AddAssetScreen1 = ({ navigation }) => {
               style={styles.input}
               placeholder="Asset Name"
               keyboardType="default"
-              value={assetcode}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Quantity"
-              keyboardType="numeric"
-              value={assetcode}
+              onChangeText={(text) => setAssetname(text)}
+              value={assetname}
             />
           </View>
           <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -184,7 +208,8 @@ const AddAssetScreen1 = ({ navigation }) => {
               style={styles.input}
               placeholder="Description"
               keyboardType="default"
-              value={assetcode}
+              onChangeText={(text) => setAssetdesc(text)}
+              value={assetdesc}
             />
           </View>
           <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -192,13 +217,15 @@ const AddAssetScreen1 = ({ navigation }) => {
               style={styles.input}
               placeholder="Model Number"
               keyboardType="default"
-              value={assetcode}
+              onChangeText={(text) => setAssetmodelno(text)}
+              value={assetmodelno}
             />
             <TextInput
               style={styles.input}
-              placeholder="Seial No."
+              placeholder="Serial No."
               keyboardType="default"
-              value={assetcode}
+              onChangeText={(text) => setAssetserial(text)}
+              value={assetserial}
             />
           </View>
 
@@ -382,8 +409,8 @@ const AddAssetScreen1 = ({ navigation }) => {
                 open={opentangible}
                 value={tangibleValue}
                 items={[
-                  { label: 'Tangible', value: '1' },
-                  { label: 'Non Tangible', value: '2' }
+                  { label: 'Tangible', value: 'Tangible' },
+                  { label: 'Intangible', value: 'Intangible' }
                 ]}
                 setOpen={(value) => {
                   setOpentangible(value)
@@ -423,8 +450,8 @@ const AddAssetScreen1 = ({ navigation }) => {
                 open={openassettype}
                 value={assettypeValue}
                 items={[
-                  { label: 'Individual', value: '1' },
-                  { label: 'Bulk', value: '2' }
+                  { label: 'Individual', value: 'Individual' },
+                  { label: 'Bulk', value: 'Bulk' }
                 ]}
                 setOpen={(value) => {
                   setOpenassettype(value)
@@ -459,8 +486,23 @@ const AddAssetScreen1 = ({ navigation }) => {
               />
             </View>
           </View>
-
-          
+          <View style={{ display: 'flex', flexDirection: 'row' }}>
+            <TextInput
+              style={styles.input}
+              placeholder="Quantity"
+              keyboardType="numeric"
+              editable={filteredassettypevalue == 'Individual' ? false : true}
+              value={assetqty ? assetqty.toString() : ''} // Convert to string
+              onChangeText={(text) => {
+                  // Parse input to integer if not empty
+                  const parsedValue = text ? parseInt(text) : null;
+                  // Update assetqty state
+                  setAssetqty(parsedValue);
+                  // Update object's property 'Quantity' as integer
+                  assetForm1.Quantity = parsedValue;
+              }}
+            />
+          </View>
         </View>
         <View
           style={{ display: 'flex', flexDirection: 'row', alignContent: 'end' }}
@@ -468,7 +510,11 @@ const AddAssetScreen1 = ({ navigation }) => {
           <Pressable style={styles.buttonPressArea}></Pressable>
           <Pressable
             style={styles.buttonPressArea}
-            onPress={() => navigation.navigate('Notifications')}
+            onPress={async() => {
+              await actions.addAssetForm(assetForm1)
+              console.log(assetForm)
+              navigation.navigate('AddAsset2')
+            }}
           >
             <View style={styles.searchContainer}>
               <Text style={styles.buttonText}>Next</Text>

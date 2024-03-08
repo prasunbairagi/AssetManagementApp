@@ -11,11 +11,12 @@ import {
   Keyboard 
 } from 'react-native'
 import assetdata from '../../datadummy.json'
-import { FontAwesome5 } from '@expo/vector-icons'
+import { FontAwesome} from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
 
 const AssetInfo = () => {
   const qrcode=useSelector((state)=>state.qrcode)
+  // console.log(qrcode)
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -36,7 +37,7 @@ const AssetInfo = () => {
       setAsset(null)
       setLoading(true)
       const res = await fetch(
-        `http://192.168.1.3:1443/api/asset/getAseetData?AssetCode=${code}`
+        `http://192.168.1.3:1443/api/AssetViewer/getAssetData?AssetCode=${code}`
       )
       if (!res.ok) {
         throw new Error('Could not fetch Asset Data')
@@ -87,7 +88,7 @@ const AssetInfo = () => {
             <View style={styles.imagebox}>
               <Image
                 style={styles.stretch}
-                src={asset.assetManagement.Image_URL}
+                src={asset.Image_URL}
               />
             </View>
             <ScrollView
@@ -100,86 +101,78 @@ const AssetInfo = () => {
                 <View>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Name:</Text>{' '}
-                    {asset.assetManagement.Asset_Name}
+                    {asset.AssetName}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Code:</Text>{' '}
-                    {asset.assetManagement.Asset_Code}
+                    {asset.AssetCode}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Type:</Text>{' '}
-                    {asset.assetManagement.Asset_Type}
+                    {asset.AssetType}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Description:</Text>{' '}
-                    {asset.assetManagement.Description}
+                    {asset.Description}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Tangible:</Text>{' '}
-                    {asset.assetManagement.Tangible_Intangible}
+                    {asset.TangibleIntangible}
                   </Text>
                 </View>
                 <View>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Category:</Text>{' '}
-                    {asset.assetManagement.Asset_Name}
+                    {asset.CategoryName}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Sub Category:</Text>{' '}
-                    {asset.assetManagement.Subcategory_Name}
+                    {asset.SubcategoryName}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Manufacturer Name:</Text>{' '}
-                    {asset.assetManagement.Manufacturer_Name}
+                    {asset.ManufacturerName}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Brand Name:</Text>{' '}
-                    {asset.assetManagement.Brand_Name}
+                    {asset.BrandName}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Quantity:</Text>{' '}
-                    {asset.assetManagement.Quantity}
+                    {asset.TotalQuantity}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Model No.:</Text>{' '}
-                    {asset.assetManagement.Model_No}
+                    {asset.ModelNo}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Serial No.:</Text>{' '}
-                    {asset.assetManagement.Serial_No}
+                    {asset.SerialNo}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Condition:</Text>{' '}
-                    {asset.assetManagement.Condition}
+                    {asset.Condition}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Purchase Date:</Text>{' '}
-                    {asset.assetManagement.Purchase_Date}
+                    {asset.PurchaseDate}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Waranty Date:</Text>{' '}
-                    {asset.assetManagement.Waranty_Date}
+                    {asset.WarrantyDate}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Expiry Date:</Text>{' '}
-                    {asset.assetManagement.Expiry_Date}
+                    {asset.ExpiryDate}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Current Location:</Text>{' '}
-                    {asset.assetManagement.Current_Location}
+                    {asset.CurrentLocation}
                   </Text>
                   <Text style={styles.assetdesctext}>
                     <Text style={styles.boldText}>Status:</Text>{' '}
-                    {asset.assetManagement.Status}
-                  </Text>
-                  <Text style={styles.assetdesctext}>
-                    <Text style={styles.boldText}>Date Added:</Text>{' '}
-                    {asset.assetManagement.Date_Added}
-                  </Text>
-                  <Text style={styles.assetdesctext}>
-                    <Text style={styles.boldText}>Date Updated:</Text>{' '}
-                    {asset.assetManagement.Date_Updated}
-                  </Text>
+                    {asset.Status}
+                  </Text>                 
                 </View>
               </View>
             </ScrollView>
