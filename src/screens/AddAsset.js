@@ -20,7 +20,7 @@ const AddAsset = () => {
     <>
     <View style={styles.disclaimationBox}>
         <Text style={styles.disclaimationText}>
-          Hey User ! Please Add your Asset
+          Hey! You can ADD your Asset here
         </Text>
     </View>
     <Stack.Navigator screenOptions={{

@@ -89,7 +89,7 @@ const AddAssetScreen1 = ({ navigation }) => {
   const fetchCategories = async () => {
     try {
       const res = await fetch(
-        `http://192.168.1.3:1443/api/AssetCategory/GetAllCategories`
+        `http://192.168.1.7:1443/api/AssetCategory/GetAllCategories`
       )
       if (!res.ok) {
         setCategory({ Category_Name: 'Oops! Empty', Category_ID: -1 })
@@ -106,7 +106,7 @@ const AddAssetScreen1 = ({ navigation }) => {
   const fetchSubCategories = async () => {
     try {
       const res = await fetch(
-        `http://192.168.1.3:1443/api/AssetSubcategory/GetSubcategoriesByCategory?categoryID=` +
+        `http://192.168.1.7:1443/api/AssetSubcategory/GetSubcategoriesByCategory?categoryID=` +
           filteredcategoryvalue
       )
       if (!res.ok) {
@@ -124,7 +124,7 @@ const AddAssetScreen1 = ({ navigation }) => {
   const fetchmanufacturers = async () => {
     try {
       const res = await fetch(
-        `http://192.168.1.3:1443/api/AssetManufacturer/GetManufacturersBycategory?categoryID=` +
+        `http://192.168.1.7:1443/api/AssetManufacturer/GetManufacturersBycategory?categoryID=` +
           filteredcategoryvalue
       )
       if (!res.ok) {
@@ -145,7 +145,7 @@ const AddAssetScreen1 = ({ navigation }) => {
   const fetchbrands = async () => {
     try {
       const res = await fetch(
-        `http://192.168.1.3:1443/api/AssetBrand/GetBrandsByManufacturers?manufacturerID=` +
+        `http://192.168.1.7:1443/api/AssetBrand/GetBrandsByManufacturers?manufacturerID=` +
           filteredmanufacturervalue
       )
       if (!res.ok) {

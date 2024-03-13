@@ -4,14 +4,9 @@ import {
   Text,
   StyleSheet,
   View,
-  Image,
   TextInput,
   Pressable,
-  ScrollView,
-  ActivityIndicator,
-  Keyboard
 } from 'react-native'
-import assetdata from '../../datadummy.json'
 import { FontAwesome } from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -73,7 +68,7 @@ const AddAssetScreen3 = ({ navigation }) => {
   const fetchVendors = async () => {
     try {
       const res = await fetch(
-        `http://192.168.1.3:1443/api/AssetVendor/GetAllVendors`
+        `http://192.168.1.7:1443/api/AssetVendor/GetAllVendors`
       )
       if (!res.ok) {
         setvendor({ Vendor_Name: 'Oops! Empty', Vendor_ID: -1 })

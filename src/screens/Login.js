@@ -20,7 +20,7 @@ const Login = () => {
     }
     console.log(userLoginDetails)
     await axios
-      .post('http://192.168.1.3:1443/api/User/ValidateUser', userLoginDetails)
+      .post('http://192.168.1.7:1443/api/User/ValidateUser', userLoginDetails)
       .then(async (response) => {
         if (response.data.ErrorCode == 1) {
           // await AsyncStorage.setItem('user',response.data.Output );

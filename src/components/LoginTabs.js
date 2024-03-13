@@ -7,10 +7,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons'
 import { Ionicons } from '@expo/vector-icons'
 import Signup from '../screens/Signup'
-// import { createStackNavigator } from '@react-navigation/stack';
 const pr = 'pr'
 const Tab = createBottomTabNavigator()
-// const Stack = createStackNavigator();
 
 const LoginTabs = () => {
   return (

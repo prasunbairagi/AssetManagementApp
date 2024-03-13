@@ -4,14 +4,9 @@ import {
   Text,
   StyleSheet,
   View,
-  Image,
   TextInput,
   Pressable,
-  ScrollView,
-  ActivityIndicator,
-  Keyboard
 } from 'react-native'
-import assetdata from '../../datadummy.json'
 import { FontAwesome } from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
 import DateTimePicker from '@react-native-community/datetimepicker'
